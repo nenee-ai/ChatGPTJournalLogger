@@ -13,11 +13,17 @@ openai.api_key = OPENAI_API_KEY
 
 def extract_tags(insight):
     prompt = f"Extract 3–6 keywords or tags that categorize this thought: \"{insight}\". Separate them with commas."
-    response = openai.ChatCompletion.create(
+    
+    client = openai.OpenAI(api_key=OPENAI_API_KEY)
+    
+    response = client.chat.completions.create(
         model="gpt-3.5-turbo",
-        messages=[{"role": "user", "content": prompt}]
+        messages=[
+            {"role": "user", "content": prompt}
+        ]
     )
-    tags = response['choices'][0]['message']['content']
+    
+    tags = response.choices[0].message.content
     return [t.strip() for t in tags.split(",")]
 
 @app.route('/log', methods=['POST'])
