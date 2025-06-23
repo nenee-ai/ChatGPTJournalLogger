@@ -48,5 +48,8 @@ def log():
         return jsonify({"error": "Failed to log to sheet", "details": response.text}), 500
 
 @app.route('/')
+if __name__ == '__main__':
+    port = int(os.environ.get("PORT", 5000))
+    app.run(host="0.0.0.0", port=port)
 def home():
     return "Insight Logger is running"
